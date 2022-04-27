@@ -1,5 +1,5 @@
 # using Nginx base image
-FROM nginx
+FROM nginx:alpine
 
 # delete nginx default .conf file
 RUN rm /etc/nginx/conf.d/default.conf

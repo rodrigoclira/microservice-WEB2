@@ -80,7 +80,7 @@ DATABASES = {
         'NAME': "postgres",
         "PASSWORD": "postgres",
         "USER": "postgres",
-        "HOST": "auth-db.ckip5pd9v8gk.us-east-1.rds.amazonaws.com",
+        "HOST": "auth-db",
         "PORT": "5432",
     }
 }
@@ -127,4 +127,3 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-

@@ -5,25 +5,25 @@ services:
         container_name: nginx
         build: nginx
         image: nginx:latest
-        ports: 
+        ports:
             - 80:80
         volumes:
             - ./nginx:/etc/nginx/
-        depends_on: 
+        depends_on:
             - web
 
     web:
         container_name: web
-        build: 
+        build:
             context: ./web
             dockerfile: Dockerfile
         image: web:latest
         command: bash -c "sleep 20 && python manage.py migrate && python manage.py runserver 0.0.0.0:8080"
-        ports: 
+        ports:
             - 8080:8000
-        volumes: 
+        volumes:
             - ./web:/app
-        depends_on: 
+        depends_on:
             - account-api
             - auth-api
 
@@ -36,20 +36,20 @@ services:
         command: bash -c "sleep 5 && python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
         volumes:
             - ./account_service:/app
-        # depends_on:
-        #     - account-db
+        depends_on:
+            - account-db
 
-    # account-db:
-    #     container_name: account-db
-    #     image: mysql:5.7.22
-    #     restart: always
-    #     environment: 
-    #         MYSQL_DATABASE: account
-    #         MYSQL_ROOT_PASSWORD: root
-    #     volumes: 
-    #         - .account_db_data:/var/lib/mysql
-    #     ports: 
-    #         - 3307:3306
+    account-db:
+        container_name: account-db
+        image: mysql:5.7.22
+        restart: always
+        environment:
+           MYSQL_DATABASE: account
+           MYSQL_ROOT_PASSWORD: root
+        volumes:
+           - .account_db_data:/var/lib/mysql
+        ports:
+           - 3307:3306
 
     auth-api:
         container_name: auth-api
@@ -60,17 +60,17 @@ services:
         command: bash -c "sleep 10 && python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
         volumes:
             - ./authentication_service:/app
-        # depends_on: 
-        #     - auth-db
+        depends_on:
+            - auth-db
 
-    # auth-db:
-    #     container_name: auth-db
-    #     image: postgres:12
-    #     restart: always
-    #     environment:
-    #       POSTGRES_PASSWORD: postgres
-    #     volumes:
-    #         - .auth_db_data:/var/lib/postgresql/data
+    auth-db:
+        container_name: auth-db
+        image: postgres:12
+        restart: always
+        environment:
+         POSTGRES_PASSWORD: postgres
+        volumes:
+           - .auth_db_data:/var/lib/postgresql/data
 
     cache:
         container_name: redis-cache
